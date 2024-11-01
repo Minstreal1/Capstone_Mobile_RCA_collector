@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/calendar-detail/bindings/calendar_detail_binding.dart';
+import '../modules/calendar-detail/views/calendar_detail_view.dart';
 import '../modules/hi/bindings/hi_binding.dart';
 import '../modules/hi/views/hi_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -10,6 +12,8 @@ import '../modules/personal_info/bindings/personal_info_binding.dart';
 import '../modules/personal_info/views/personal_info_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
 import '../modules/sign_up/views/sign_up_view.dart';
+import '../modules/tab-calendar/bindings/tab_calendar_binding.dart';
+import '../modules/tab-calendar/views/tab_calendar_view.dart';
 import '../modules/tab_account/bindings/tab_account_binding.dart';
 import '../modules/tab_account/views/tab_account_view.dart';
 import '../modules/tab_home/bindings/tab_home_binding.dart';
@@ -64,6 +68,16 @@ class AppPages {
       name: _Paths.HI,
       page: () => const HiView(),
       binding: HiBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAB_CALENDAR,
+      page: () => const TabCalendarView(),
+      binding: TabCalendarBinding(),
+    ),
+    GetPage(
+      name: _Paths.CALENDAR_DETAIL,
+      page: () => const CalendarDetailView(),
+      binding: CalendarDetailBinding(),
     ),
   ];
 }

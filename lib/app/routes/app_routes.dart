@@ -11,6 +11,8 @@ abstract class Routes {
   static const TAB_HOME = _Paths.TAB_HOME;
   static const PERSONAL_INFO = _Paths.PERSONAL_INFO;
   static const HI = _Paths.HI;
+  static const TAB_CALENDAR = _Paths.TAB_CALENDAR;
+  static const CALENDAR_DETAIL = _Paths.CALENDAR_DETAIL;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const TAB_HOME = '/tab-home';
   static const PERSONAL_INFO = '/personal-info';
   static const HI = '/hi';
+  static const TAB_CALENDAR = '/tab-calendar';
+  static const CALENDAR_DETAIL = '/calendar-detail';
 }
