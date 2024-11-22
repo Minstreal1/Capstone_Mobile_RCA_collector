@@ -1,11 +1,17 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:rca_resident/app/base/base_controller.dart';
+import 'package:rca_resident/app/model/schedule_cart.dart';
+import 'package:rca_resident/app/resource/reponsive_utils.dart';
+import 'package:rca_resident/app/service/main_service.dart';
 
-class TabCalendarController extends GetxController {
+class TabCalendarController extends BaseController {
   //TODO: Implement TabCalendarController
 
-  final count = 0.obs;
+  RxList<ScheduleCard> listSchedule = <ScheduleCard>[].obs;
   @override
   void onInit() {
+    fetchListScheduleByStatus();
     super.onInit();
   }
 
@@ -19,5 +25,12 @@ class TabCalendarController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  fetchListScheduleByStatus() {
+    isLoading(true);
+    MainService().fetchListScheduleByStatusByUser(status: 'ACCEPTED').then((data) {
+      listSchedule(data);
+      listSchedule.value.reversed;
+      isLoading(false);
+    }).catchError(handleError);
+  }
 }

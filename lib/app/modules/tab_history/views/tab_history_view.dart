@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:rca_resident/app/base/base_common.dart';
 import 'package:rca_resident/app/model/schedule_cart.dart';
+import 'package:rca_resident/app/modules/tab_history/controllers/tab_history_controller.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
 import 'package:rca_resident/app/resource/text_style.dart';
 import 'package:rca_resident/app/resource/util_common.dart';
+import 'package:rca_resident/app/routes/app_pages.dart';
 
-import '../controllers/tab_home_controller.dart';
 
-class TabHomeView extends GetView<TabHomeController> {
-  const TabHomeView({super.key});
+class TabHistoryView extends GetView<TabHistoryController> {
+  const TabHistoryView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: SizedBox(
       height: double.infinity,
       width: double.infinity,
       child: SingleChildScrollView(
@@ -24,23 +24,21 @@ class TabHomeView extends GetView<TabHomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBoxConst.size(context: context, size: 10),
-              _headerWelcome(context),
-              SizedBoxConst.size(context: context, size: 20),
-              TextConstant.subTile2(text: 'Đơn mới', context),
-              Container(
-                width: UtilsReponsive.width(70, context),
-                height: UtilsReponsive.height(2, context),
-                color: ColorsManager.primary,
+              Center(
+                child: TextConstant.titleH3(text: 'Lịch sử thu gom', context),
               ),
+              SizedBoxConst.size(context: context, size: 20),
               Obx(
-                () =>controller.isLoading.value?CircularProgressIndicator() :ListView.separated(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (context, index) =>
-                        _cardData(context, controller.listSchedule[index]),
-                    separatorBuilder: (context, index) =>
-                        SizedBoxConst.size(context: context),
-                    itemCount: controller.listSchedule.value.length),
+                () => controller.isLoading.value
+                    ? CircularProgressIndicator()
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) =>
+                            _cardData(context, controller.listSchedule[index]),
+                        separatorBuilder: (context, index) =>
+                            SizedBoxConst.size(context: context),
+                        itemCount: controller.listSchedule.value.length),
               )
             ],
           )),
@@ -77,7 +75,7 @@ class TabHomeView extends GetView<TabHomeController> {
                       SizedBoxConst.sizeWith(context: context, size: 5),
                       TextConstant.subTile2(
                           text: UtilCommon.convertEEEDateTime(
-                              schedule.scheduleDate!),
+                              schedule.scheduleDate ?? DateTime.now()),
                           fontWeight: FontWeight.w500,
                           context),
                     ],
@@ -142,72 +140,19 @@ class TabHomeView extends GetView<TabHomeController> {
                       Expanded(
                         child: TextConstant.subTile3(
                           context,
-                          text: '${schedule.materialType?.map((element)=>element.name).toList().join(', ')}',
+                          text:
+                              '${schedule.materialType?.map((element) => element.name).toList().join(', ')}',
                         ),
                       ),
                     ],
                   ),
                   SizedBoxConst.size(context: context),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          controller.regisSchdule(schedule.scheduleId!);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: UtilsReponsive.height(30, context),
-                          width: UtilsReponsive.height(100, context),
-                          decoration: BoxDecoration(
-                            color: ColorsManager.primary,
-                            borderRadius: BorderRadius.circular(
-                                UtilsReponsive.height(8, context)),
-                            border: Border.all(color: ColorsManager.primary),
-                          ),
-                          child: TextConstant.subTile3(context,
-                              text: 'Đăng kí nhận', color: Colors.white),
-                        ),
-                      )
-                    ],
-                  )
+                  
                 ],
               ))
             ],
           )),
     );
   }
-
-  SizedBox _headerWelcome(BuildContext context) {
-    return SizedBox(
-      height: UtilsReponsive.height(50, context),
-      width: double.infinity,
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: UtilsReponsive.width(5, context)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: UtilsReponsive.height(40, context),
-              width: UtilsReponsive.height(40, context),
-              padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.teal),
-                color: ColorsManager.primary,
-                shape: BoxShape.circle,
-              ),
-            ),
-            SizedBoxConst.sizeWith(context: context),
-            TextConstant.subTile3(context,
-                fontWeight: FontWeight.bold,
-                text:
-                    'Xin chào,\n${BaseCommon.instance.accountSession?.lastName}',
-                color: ColorsManager.primary),
-          ],
-        ),
-      ),
-    );
-  }
 }
+

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:rca_resident/app/base/base_view.dart';
 import 'package:rca_resident/app/common/widget/app_bar_custom.dart';
+import 'package:rca_resident/app/model/material_type.dart';
 import 'package:rca_resident/app/modules/models/item_collected.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/form_field_widget.dart';
@@ -10,15 +12,17 @@ import 'package:rca_resident/app/resource/text_style.dart';
 
 import '../controllers/calendar_detail_controller.dart';
 
-class CalendarDetailView extends GetView<CalendarDetailController> {
+class CalendarDetailView extends BaseView<CalendarDetailController> {
   const CalendarDetailView({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget buildView(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: ConstrainedBox(
             constraints: BoxConstraints.tightFor(width: context.width),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                controller.createQrPayment();
+              },
               style: ButtonStyle(
                 shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
@@ -28,9 +32,20 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                 backgroundColor: WidgetStateProperty.all(ColorsManager.primary),
                 padding: WidgetStateProperty.all(EdgeInsets.all(14)),
               ),
-              child: TextConstant.subTile2(
-                context,
-                text: 'Tạo QR Code',
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextConstant.subTile2(
+                    context,
+                    text: 'Tạo QR Code',
+                  ),
+                   TextConstant.subTile2(
+                    context,
+                    text: 'Tổng: ${controller.sumData}',
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
+                ],
               ),
             )),
         body: SafeArea(
@@ -64,7 +79,7 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                           TextConstant.subTile3(context,
                               text: 'Khách hàng', fontWeight: FontWeight.w500),
                           SizedBoxConst.sizeWith(context: context),
-                          TextConstant.subTile3(context, text: 'Nguyễn Văn B'),
+                          TextConstant.subTile3(context, text: '${controller.dataSchedule.residentId?.user?.firstName} ${controller.dataSchedule.residentId?.user?.lastName}'),
                         ],
                       ),
                       SizedBoxConst.size(context: context, size: 5),
@@ -74,7 +89,7 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                               text: 'Chung cư', fontWeight: FontWeight.w500),
                           SizedBoxConst.sizeWith(context: context),
                           TextConstant.subTile3(context,
-                              text: 'Vinhome Grand Park'),
+                              text: '${controller.dataSchedule.building?.buildingName}'),
                         ],
                       ),
                       SizedBoxConst.size(context: context, size: 5),
@@ -84,7 +99,7 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                               text: 'Số điện thoại',
                               fontWeight: FontWeight.w500),
                           SizedBoxConst.sizeWith(context: context),
-                          TextConstant.subTile3(context, text: '020202890'),
+                          TextConstant.subTile3(context, text: '${controller.dataSchedule.residentId?.user?.phoneNumber}'),
                         ],
                       ),
                     ],
@@ -96,17 +111,17 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                   children: [
                     Obx(
                       () => Expanded(
-                        child: DropdownButton<ItemCollected>(
+                        child: DropdownButton<MaterialTypeData>(
                           value: controller.selectedDropdown.value,
-                          onChanged: (ItemCollected? newValue) {
+                          onChanged: (MaterialTypeData? newValue) {
                             controller.selectedDropdown.value = newValue!;
                           },
-                          items: controller.listItemConst
-                              .map<DropdownMenuItem<ItemCollected>>(
-                                  (ItemCollected value) {
-                            return DropdownMenuItem<ItemCollected>(
+                          items: controller.listMaterialType.value
+                              .map<DropdownMenuItem<MaterialTypeData>>(
+                                  (MaterialTypeData value) {
+                            return DropdownMenuItem<MaterialTypeData>(
                               value: value,
-                              child: Text(value.name),
+                              child: Text(value.name!),
                             );
                           }).toList(),
                         ),
@@ -127,38 +142,44 @@ class CalendarDetailView extends GetView<CalendarDetailController> {
                     separatorBuilder: (context, index) =>
                         SizedBoxConst.size(context: context),
                     itemBuilder: (context, index) {
-                      return Row(
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
                               TextConstant.subTile2(context,
-                                  text: controller.listItemAdd[index].name),
+                                  text: controller.listItemAdd[index].name!),
                               TextConstant.subTile3(context,
                                   text:
-                                      '1kg = ${controller.listItemAdd[index].point} điểm',
+                                      '1kg = ${controller.listItemAdd[index].price} điểm',
                                   fontWeight: FontWeight.w500),
-                            ],
-                          )),
-                          Expanded(
-                            child: FormFieldWidget(
-                              padding: 5,
-                              setValueFunc: (value) {
-                                controller.listItemAdd[index].weight =
-                                    double.tryParse(value) ?? 0;
-                              },
-                              borderColor: Colors.black,
-                              radiusBorder: 16,
-                            ),
-                          ),
-                          SizedBoxConst.sizeWith(context: context),
-                          GestureDetector(
+                                                          ],
+                                                        ),
+                                                         GestureDetector(
                               onTap: () {
                                 controller
                                     .removeItem(controller.listItemAdd[index]);
                               },
                               child: Icon(Icons.close))
+                            ],
+                          ),
+                          SizedBoxConst.size(context: context),
+                          FormFieldWidget(
+                            padding: 5,
+                            setValueFunc: (value) {
+                              controller.listItemAdd[index].weight =
+                                  double.tryParse(value) ?? 0;
+                              controller.calculation();
+                            },
+                            borderColor: Colors.black,
+                            radiusBorder: 16,
+                          ),
+                          SizedBoxConst.sizeWith(context: context),
+                         
                         ],
                       );
                     },

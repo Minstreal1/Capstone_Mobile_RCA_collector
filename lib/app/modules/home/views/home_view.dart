@@ -16,17 +16,17 @@ class HomeView extends GetView<HomeController> {
       onWillPop: () async => false,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.miniCenterDocked,
-          floatingActionButton: Container(
-            height: UtilsReponsive.height(60, context),
-            width: UtilsReponsive.height(60, context),
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            child: FloatingActionButton(
-                backgroundColor: ColorsManager.primary,
-                onPressed: () async {},
-                child: Icon(Icons.add)),
-          ),
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.miniCenterDocked,
+          // floatingActionButton: Container(
+          //   height: UtilsReponsive.height(60, context),
+          //   width: UtilsReponsive.height(60, context),
+          //   decoration: BoxDecoration(shape: BoxShape.circle),
+          //   child: FloatingActionButton(
+          //       backgroundColor: ColorsManager.primary,
+          //       onPressed: () async {},
+          //       child: Icon(Icons.add)),
+          // ),
           bottomNavigationBar: Obx(() => _bottomNav2(context)),
           body: Obx(
               () => controller.body.elementAt(controller.indexSelected.value))),
@@ -51,10 +51,10 @@ class HomeView extends GetView<HomeController> {
               icon: LineIcon(Icons.calendar_month),
               label: 'Lịch',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.abc),
-              label: 'Tạo lịch',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.abc),
+            //   label: 'Tạo lịch',
+            // ),
             BottomNavigationBarItem(
               icon: LineIcon(Icons.book),
               label: 'Lịch sử',

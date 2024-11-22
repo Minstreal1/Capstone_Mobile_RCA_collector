@@ -16,6 +16,8 @@ import '../modules/tab-calendar/bindings/tab_calendar_binding.dart';
 import '../modules/tab-calendar/views/tab_calendar_view.dart';
 import '../modules/tab_account/bindings/tab_account_binding.dart';
 import '../modules/tab_account/views/tab_account_view.dart';
+import '../modules/tab_history/bindings/tab_history_binding.dart';
+import '../modules/tab_history/views/tab_history_view.dart';
 import '../modules/tab_home/bindings/tab_home_binding.dart';
 import '../modules/tab_home/views/tab_home_view.dart';
 import '../modules/welcome/bindings/welcome_binding.dart';
@@ -78,6 +80,11 @@ class AppPages {
       name: _Paths.CALENDAR_DETAIL,
       page: () => const CalendarDetailView(),
       binding: CalendarDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAB_HISTORY,
+      page: () => const TabHistoryView(),
+      binding: TabHistoryBinding(),
     ),
   ];
 }

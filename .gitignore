@@ -5,3 +5,10 @@ macos
 test
 windows
 web
+build
+android/gradle.properties
+.flutter-plugins
+.flutter-plugins-dependencies
+README copy.md
+pubspec.lock
+rca_collector.iml

@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rca_resident/app/base/base_common.dart';
 import 'package:rca_resident/app/routes/app_pages.dart';
+import 'package:rca_resident/app/service/auth.dart';
 
 class LoginController extends GetxController {
   //TODO: Implement LoginController
@@ -12,7 +13,7 @@ class LoginController extends GetxController {
 
   Rx<String> phoneError = ''.obs;
   Rx<String> passwordError = ''.obs;
-
+  AuthService authService = AuthService();
 
   final isLoading = false.obs;
   final visiblePassword = false.obs;
@@ -52,25 +53,17 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
-    Get.toNamed(Routes.HOME);
-    // try {
-    //   if (!isLoading.value) {
-    //     isLoading.value = true;
-      
-      
-    //   }
-    // } catch (e) {
-    //   print("Failed to sign in: $e");
-    //   // Hiển thị lỗi cho người dùng
-    //   //
-    //   isLoading.value = false;
-
-    //   if (e.toString().contains('The supplied auth credential is incorrect')) {
-    //     SnackBarCheck.snackBar(
-    //         isFail: true, text: 'The email or pass not correct');
-    //   } else {
-    //     SnackBarCheck.snackBar(text: "Login fail", isFail: true);
-    //   }
-    // }
+    authService
+        .login(
+            username: phoneController.text,
+             password: passwordController.text,
+            // username: "huynguyen005",
+            // password: "huynguyen005"
+            )
+        .then((token) {
+      BaseCommon.instance.saveToken(token).then((_) {
+        Get.toNamed(Routes.HOME);
+      });
+    });
   }
 }
