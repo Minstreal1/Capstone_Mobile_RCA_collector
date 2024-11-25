@@ -12,7 +12,8 @@ class BaseLink {
 
   static String createQrPayment = '$domain/collector/create-collector-resident-payment';
 
-
+  static String scheduleDetailById = '$domain/schedule/get-schedule-by-id';
+  static String paymentDetailByScheduleId = '$domain/collector/get-payment-cr-by-schedule-id';
 
 
 }
