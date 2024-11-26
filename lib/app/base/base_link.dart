@@ -5,7 +5,7 @@ class BaseLink {
 
   static String fetchListMaterial = '$domain/material/get-all-material';
   static String fetchListScheduleByStatus = '$domain/collector/get-list-collection-schedule-by-status';
-  static String fetchListScheduleUserByStatus = '$domain/collector/get-list-collection-schedule-by-user-by-status';
+  static String fetchListScheduleUserByStatus = '$domain/schedule/get-list-collection-schedule-by-user-by-status';
   
   static String regisSchdule = '$domain/collector/accept-colecttion-schedule-by-id';
   static String fetchScheduleById = '$domain/schedule/get-schedule-by-id';
