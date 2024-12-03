@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
+import 'package:rca_resident/app/resource/form_field_widget.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
+import 'package:rca_resident/app/resource/text_style.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -16,17 +19,122 @@ class HomeView extends GetView<HomeController> {
       onWillPop: () async => false,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.miniCenterDocked,
-          // floatingActionButton: Container(
-          //   height: UtilsReponsive.height(60, context),
-          //   width: UtilsReponsive.height(60, context),
-          //   decoration: BoxDecoration(shape: BoxShape.circle),
-          //   child: FloatingActionButton(
-          //       backgroundColor: ColorsManager.primary,
-          //       onPressed: () async {},
-          //       child: Icon(Icons.add)),
-          // ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: Container(
+            height: UtilsReponsive.height(60, context),
+            width: UtilsReponsive.height(60, context),
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: FloatingActionButton(
+                backgroundColor: ColorsManager.primary,
+                onPressed: () async {
+                   Get.bottomSheet(Container(
+                                  padding: EdgeInsets.all(15),
+                                  height:
+                                      UtilsReponsive.height(300, Get.context!),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            UtilsReponsive.height(
+                                                15, Get.context!)),
+                                        topRight: Radius.circular(
+                                            UtilsReponsive.height(
+                                                15, Get.context!)),
+                                      ),
+                                      color: Colors.white),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.isQrCode(true);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Obx(() => controller.isQrCode.value
+                                                ? Icon(
+                                                    Icons.radio_button_checked,
+                                                    color:
+                                                        ColorsManager.primary,
+                                                  )
+                                                : Icon(Icons.radio_button_off)),
+                                            TextConstant.subTile3(context,
+                                                text: 'Quét QR'),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBoxConst.size(context: context),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.isQrCode(false);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Obx(() => !controller.isQrCode.value
+                                                ? Icon(
+                                                    Icons.radio_button_checked,
+                                                    color:
+                                                        ColorsManager.primary,
+                                                  )
+                                                : Icon(Icons.radio_button_off)),
+                                            TextConstant.subTile3(context,
+                                                text: 'Nhập mã thanh toán'),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBoxConst.size(context: context),
+                                      Obx(
+                                        () => Visibility(
+                                          visible: !controller.isQrCode.value,
+                                          child: FormFieldWidget(
+                                            setValueFunc: (value) {},
+                                            radiusBorder: 10,
+                                            controllerEditting: controller
+                                                .textEdittingController,
+                                            borderColor: Colors.black,
+                                            textInputType: TextInputType.number,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBoxConst.size(context: context),
+                                      ConstrainedBox(
+                                          constraints: BoxConstraints.tightFor(
+                                              width: Get.context!.width),
+                                          child: ElevatedButton(
+                                              onPressed: () {
+                                                controller.payment();
+                                              },
+                                              style: ButtonStyle(
+                                                shape: WidgetStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                ),
+                                                backgroundColor:
+                                                    WidgetStateProperty.all(
+                                                        ColorsManager.primary),
+                                                padding:
+                                                    WidgetStateProperty.all(
+                                                        EdgeInsets.all(14)),
+                                              ),
+                                              child: Obx(
+                                                () => controller
+                                                        .isLockButton.value
+                                                    ? CupertinoActivityIndicator()
+                                                    : TextConstant.subTile2(
+                                                        Get.context!,
+                                                        text:
+                                                            'Xác nhận đã thanh toán',
+                                                      ),
+                                              ))),
+                                    ],
+                                  ),
+                                ));
+                },
+                child: Icon(Icons.payment)),
+          ),
           bottomNavigationBar: Obx(() => _bottomNav2(context)),
           body: Obx(
               () => controller.body.elementAt(controller.indexSelected.value))),

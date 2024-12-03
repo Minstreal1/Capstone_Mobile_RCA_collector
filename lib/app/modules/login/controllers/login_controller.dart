@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rca_resident/app/base/base_common.dart';
+import 'package:rca_resident/app/resource/util_common.dart';
 import 'package:rca_resident/app/routes/app_pages.dart';
 import 'package:rca_resident/app/service/auth.dart';
 
@@ -55,14 +56,19 @@ class LoginController extends GetxController {
   Future<void> login() async {
     authService
         .login(
-            username: phoneController.text,
-             password: passwordController.text,
-            // username: "huynguyen005",
-            // password: "huynguyen005"
+            // username: phoneController.text,
+            //  password: passwordController.text,
+            username: "huynguyen005",
+            password: "huynguyen005"
             )
         .then((token) {
       BaseCommon.instance.saveToken(token).then((_) {
-        Get.toNamed(Routes.HOME);
+        if (BaseCommon.instance.accountSession!.role ==
+            'ROLE_COLLECTOR') {
+          Get.toNamed(Routes.HOME);
+        }else{
+          UtilCommon.snackBar(text: 'Tài khoản không phải Collector', isFail: true);
+        }
       });
     });
   }

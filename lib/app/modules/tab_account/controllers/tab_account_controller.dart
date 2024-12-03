@@ -12,6 +12,8 @@ class TabAccountController extends GetxController {
     ,NavAccount(title: 'Lịch sử', icon: Icon(Icons.history,color: Colors.white), path: '', textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Đổi mật khẩu', icon: Icon(Icons.password,color: Colors.white), path: '', textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Đổi điểm', icon: Icon(Icons.money, color: Colors.white), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
+    ,NavAccount(title: 'QR của tôi', icon: Icon(Icons.qr_code, color: Colors.white), path: 'qr_code', textColor: Colors.black, backgroundColor:ColorsManager.primary)
+  
     // ,NavAccount(title: 'Thông tin chung', icon: Icon(Icons.info, color: ColorsManager.primary), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
   ];
 //  Rx<AccountSession> account = AccountSession().obs;

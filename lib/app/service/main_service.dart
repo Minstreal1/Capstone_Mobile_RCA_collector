@@ -78,5 +78,16 @@ class MainService extends ApiService {
       (p0) => PaymentDetail.fromJson(p0),
     );
   }
+    Future<bool> confirmPayment({required int idPayment}) async {
+    final response = await http.post(
+        Uri.parse(BaseLink.confirmPayment + '?id=$idPayment'),
+        headers: BaseCommon.instance.headerRequest());
+    log('StatusCode ${response.statusCode} - ${BaseLink.confirmPayment + '?id=$idPayment'}');
+    log('Body ${response.body}');
+    if (response.statusCode == 200) {
+      return true;
+    }
+    throw Exception(json.decode(response.body)['message']);
+  }
   //
 }

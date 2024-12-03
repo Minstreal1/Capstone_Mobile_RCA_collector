@@ -25,7 +25,7 @@ class TabHistoryController extends BaseController {
 
   fetchListScheduleByStatus() {
     isLoading(true);
-    MainService().fetchListScheduleByStatusByUser(status: 'ONGOING').then((data) {
+    MainService().fetchListScheduleByStatusByUser(status: 'SUCCESS').then((data) {
       listSchedule(data);
       listSchedule.value.reversed;
       isLoading(false);

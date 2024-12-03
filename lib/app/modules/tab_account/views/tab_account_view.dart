@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:rca_resident/app/base/base_common.dart';
 import 'package:rca_resident/app/modules/tab_account/model/nav_account.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
@@ -104,7 +106,27 @@ class TabAccountView extends GetView<TabAccountController> {
   GestureDetector _cardFeature(BuildContext context, NavAccount nav) {
     return GestureDetector(
         onTap: () {
-          Get.toNamed(nav.path);
+          if (nav.path == 'qr_code') {
+            Get.bottomSheet(Container(
+              height: UtilsReponsive.height(400, Get.context!),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                        UtilsReponsive.height(15, Get.context!)),
+                    topRight: Radius.circular(
+                        UtilsReponsive.height(15, Get.context!)),
+                  ),
+                  color: Colors.white),
+              child: QrImageView(
+                data: BaseCommon.instance.accessToken!,
+                version: QrVersions.auto,
+                size: 200.0,
+              ),
+            ));
+          } else {
+            Get.toNamed(nav.path);
+          }
         },
         child: Container(
           decoration: BoxDecoration(
@@ -125,7 +147,8 @@ class TabAccountView extends GetView<TabAccountController> {
               Expanded(
                   child: TextConstant.titleH3(context,
                       color: Colors.white,
-                      text: nav.title, fontWeight: FontWeight.w500)),
+                      text: nav.title,
+                      fontWeight: FontWeight.w500)),
               Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.white,
