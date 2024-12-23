@@ -33,14 +33,16 @@ class TabHomeView extends GetView<TabHomeController> {
                 color: ColorsManager.primary,
               ),
               Obx(
-                () =>controller.isLoading.value?CircularProgressIndicator() :ListView.separated(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (context, index) =>
-                        _cardData(context, controller.listSchedule[index]),
-                    separatorBuilder: (context, index) =>
-                        SizedBoxConst.size(context: context),
-                    itemCount: controller.listSchedule.value.length),
+                () => controller.isLoading.value
+                    ? CircularProgressIndicator()
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) =>
+                            _cardData(context, controller.listSchedule[index]),
+                        separatorBuilder: (context, index) =>
+                            SizedBoxConst.size(context: context, size: 15),
+                        itemCount: controller.listSchedule.value.length),
               )
             ],
           )),
@@ -53,10 +55,7 @@ class TabHomeView extends GetView<TabHomeController> {
       child: Container(
           // height: UtilsReponsive.height(100, context),
           width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(UtilsReponsive.height(15, context)),
-              border: Border.all(color: ColorsManager.primary)),
+          decoration: UtilCommon.shadowBox(context, colorSd: ColorsManager.primary),
           padding: EdgeInsets.symmetric(
               vertical: UtilsReponsive.height(10, context),
               horizontal: UtilsReponsive.height(10, context)),
@@ -93,8 +92,7 @@ class TabHomeView extends GetView<TabHomeController> {
                       SizedBoxConst.sizeWith(context: context, size: 5),
                       TextConstant.subTile2(
                         context,
-                        text:
-                            '${schedule.scheduleId!}',
+                        text: '${schedule.scheduleId!}',
                       ),
                     ],
                   ),
@@ -142,7 +140,8 @@ class TabHomeView extends GetView<TabHomeController> {
                       Expanded(
                         child: TextConstant.subTile3(
                           context,
-                          text: '${schedule.materialType?.map((element)=>element.name).toList().join(', ')}',
+                          text:
+                              '${schedule.materialType?.map((element) => element.name).toList().join(', ')}',
                         ),
                       ),
                     ],
@@ -203,7 +202,7 @@ class TabHomeView extends GetView<TabHomeController> {
             TextConstant.subTile3(context,
                 fontWeight: FontWeight.bold,
                 text:
-                    'Xin chào,\n${BaseCommon.instance.accountSession?.lastName}',
+                    'Xin chào,\n${BaseCommon.instance.accountSession?.firstName} ${BaseCommon.instance.accountSession?.lastName}',
                 color: ColorsManager.primary),
           ],
         ),

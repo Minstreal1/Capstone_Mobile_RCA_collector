@@ -97,49 +97,54 @@ class CalendarDetailController extends BaseController {
     payload.scheduleId = dataSchedule.scheduleId!;
     payload.materials = listItemAdd.value;
     mainService.createQrPayment(payload: payload).then((value) {
-      Get.bottomSheet(Container(
-        height: UtilsReponsive.height(400, Get.context!),
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(UtilsReponsive.height(15, Get.context!)),
-              topRight:
-                  Radius.circular(UtilsReponsive.height(15, Get.context!)),
-            ),
-            color: Colors.white),
-        child: Column(
-          children: [
-            TextConstant.subTile2(Get.context!, text: 'Mã thanh toán: $value'),
-             TextConstant.subTile2(Get.context!, text: 'Tổng cộng: $sumData'),
-            QrImageView(
-              data: value.toString(),
-              version: QrVersions.auto,
-              size: 200.0,
-            ),
-            ConstrainedBox(
-            constraints: BoxConstraints.tightFor(width: Get.context!.width),
-            child: ElevatedButton(
-              onPressed: () {
-                fetchScheduleDetail();
-              },
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+      Get.dialog(Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Container(
+            height: UtilsReponsive.height(400, Get.context!),
+            width: double.infinity,
+            decoration: UtilCommon.shadowBox(Get.context!),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Icon(Icons.close)),),
+                TextConstant.subTile2(Get.context!, text: 'Mã thanh toán: 12'),
+                 TextConstant.subTile2(Get.context!, text: 'Tổng cộng: $sumData'),
+                QrImageView(
+                  data: '12'.toString(),
+                  version: QrVersions.auto,
+                  size: 200.0,
                 ),
-                backgroundColor: WidgetStateProperty.all(ColorsManager.primary),
-                padding: WidgetStateProperty.all(EdgeInsets.all(14)),
-              ),
-              child:  TextConstant.subTile2(
-                    Get.context!,
-                    text: 'Xác nhận đã thanh toán',
+                ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: Get.context!.width),
+                child: ElevatedButton(
+                  onPressed: () {
+                    fetchScheduleDetail();
+                  },
+                  style: ButtonStyle(
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor: WidgetStateProperty.all(ColorsManager.primary),
+                    padding: WidgetStateProperty.all(EdgeInsets.all(14)),
                   ),
-            )),
-          ],
+                  child:  TextConstant.subTile2(
+                        Get.context!,
+                        text: 'Xác nhận đã thanh toán',
+                      ),
+                )),
+              ],
+            ),
+          ),
         ),
       ),
-      isDismissible: false,
       );
       log('Id $value');
     }).catchError(handleError);
@@ -147,7 +152,7 @@ class CalendarDetailController extends BaseController {
 
   fetchScheduleDetail(){
     mainService.fetchScheduleById(id: dataSchedule.scheduleId!).then((schedule){
-      if(schedule.status == 'ONGOING'){
+      if(schedule.status == 'SUCCESS'){
         Get.offAllNamed(Routes.HOME);
         UtilCommon.snackBar(text: 'Đơn hàng hoàn tất');
       }else{

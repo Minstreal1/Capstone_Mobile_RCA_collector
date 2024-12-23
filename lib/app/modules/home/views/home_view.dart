@@ -8,6 +8,7 @@ import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/form_field_widget.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
 import 'package:rca_resident/app/resource/text_style.dart';
+import 'package:rca_resident/app/resource/util_common.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -28,110 +29,102 @@ class HomeView extends GetView<HomeController> {
             child: FloatingActionButton(
                 backgroundColor: ColorsManager.primary,
                 onPressed: () async {
-                   Get.bottomSheet(Container(
-                                  padding: EdgeInsets.all(15),
-                                  height:
-                                      UtilsReponsive.height(300, Get.context!),
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            UtilsReponsive.height(
-                                                15, Get.context!)),
-                                        topRight: Radius.circular(
-                                            UtilsReponsive.height(
-                                                15, Get.context!)),
+                  Get.dialog(Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Container(
+                      padding: const EdgeInsets.all(15),
+                      height: UtilsReponsive.height(300, context),
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                          vertical: UtilsReponsive.height(200, context),
+                          horizontal: UtilsReponsive.height(30, context)),
+                      decoration: UtilCommon.shadowBox(context),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(Icons.close)),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.isQrCode(true);
+                            },
+                            child: Row(
+                              children: [
+                                Obx(() => controller.isQrCode.value
+                                    ? Icon(
+                                        Icons.radio_button_checked,
+                                        color: ColorsManager.primary,
+                                      )
+                                    : Icon(Icons.radio_button_off)),
+                                TextConstant.subTile3(context, text: 'Nạp tiền'),
+                              ],
+                            ),
+                          ),
+                          SizedBoxConst.size(context: context),
+                          GestureDetector(
+                            onTap: () {
+                              controller.isQrCode(false);
+                            },
+                            child: Row(
+                              children: [
+                                Obx(() => !controller.isQrCode.value
+                                    ? Icon(
+                                        Icons.radio_button_checked,
+                                        color: ColorsManager.primary,
+                                      )
+                                    : Icon(Icons.radio_button_off)),
+                                TextConstant.subTile3(context,
+                                    text: 'Nhập mã thanh toán'),
+                              ],
+                            ),
+                          ),
+                          SizedBoxConst.size(context: context),
+                         FormFieldWidget(
+                              setValueFunc: (value) {},
+                              radiusBorder: 10,
+                              controllerEditting:
+                                  controller.pointNum,
+                              borderColor: Colors.black,
+                              textInputType: TextInputType.number,
+                            ),
+                          
+                          SizedBoxConst.size(context: context),
+                          ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  width: Get.context!.width),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    controller.payment();
+                                  },
+                                  style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
-                                      color: Colors.white),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.isQrCode(true);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Obx(() => controller.isQrCode.value
-                                                ? Icon(
-                                                    Icons.radio_button_checked,
-                                                    color:
-                                                        ColorsManager.primary,
-                                                  )
-                                                : Icon(Icons.radio_button_off)),
-                                            TextConstant.subTile3(context,
-                                                text: 'Quét QR'),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBoxConst.size(context: context),
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.isQrCode(false);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Obx(() => !controller.isQrCode.value
-                                                ? Icon(
-                                                    Icons.radio_button_checked,
-                                                    color:
-                                                        ColorsManager.primary,
-                                                  )
-                                                : Icon(Icons.radio_button_off)),
-                                            TextConstant.subTile3(context,
-                                                text: 'Nhập mã thanh toán'),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBoxConst.size(context: context),
-                                      Obx(
-                                        () => Visibility(
-                                          visible: !controller.isQrCode.value,
-                                          child: FormFieldWidget(
-                                            setValueFunc: (value) {},
-                                            radiusBorder: 10,
-                                            controllerEditting: controller
-                                                .textEdittingController,
-                                            borderColor: Colors.black,
-                                            textInputType: TextInputType.number,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBoxConst.size(context: context),
-                                      ConstrainedBox(
-                                          constraints: BoxConstraints.tightFor(
-                                              width: Get.context!.width),
-                                          child: ElevatedButton(
-                                              onPressed: () {
-                                                controller.payment();
-                                              },
-                                              style: ButtonStyle(
-                                                shape: WidgetStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                  ),
-                                                ),
-                                                backgroundColor:
-                                                    WidgetStateProperty.all(
-                                                        ColorsManager.primary),
-                                                padding:
-                                                    WidgetStateProperty.all(
-                                                        EdgeInsets.all(14)),
-                                              ),
-                                              child: Obx(
-                                                () => controller
-                                                        .isLockButton.value
-                                                    ? CupertinoActivityIndicator()
-                                                    : TextConstant.subTile2(
-                                                        Get.context!,
-                                                        text:
-                                                            'Xác nhận đã thanh toán',
-                                                      ),
-                                              ))),
-                                    ],
+                                    ),
+                                    backgroundColor: WidgetStateProperty.all(
+                                        ColorsManager.primary),
+                                    padding: WidgetStateProperty.all(
+                                        EdgeInsets.all(14)),
                                   ),
-                                ));
+                                  child: Obx(
+                                    () => controller.isLockButton.value
+                                        ? CupertinoActivityIndicator()
+                                        : TextConstant.subTile2(
+                                            Get.context!,
+                                            text: 'Xác nhận đã thanh toán',
+                                          ),
+                                  ))),
+                        ],
+                      ),
+                    ),
+                  ));
                 },
                 child: Icon(Icons.payment)),
           ),

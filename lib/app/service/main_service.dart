@@ -52,7 +52,7 @@ class MainService extends ApiService {
       {required CreatePaymentPayload payload}) async {
     final response = await http.post(Uri.parse(BaseLink.createQrPayment),
         headers: BaseCommon.instance.headerRequest(), body: jsonEncode(payload.toJson()));
-    log("payload: ${payload.toString()}");
+    log("payload: ${jsonEncode(payload).toString()}");
     log('StatusCode ${response.statusCode} - ${BaseLink.createQrPayment}');
     log('Body ${response.body}');
     if (response.statusCode == 200) {
@@ -89,5 +89,36 @@ class MainService extends ApiService {
     }
     throw Exception(json.decode(response.body)['message']);
   }
-  //
+  Future<double> fetchPoint() async {
+     final response = await http.get(Uri.parse(BaseLink.getPoints),
+        headers: BaseCommon.instance.headerRequest());
+    log('StatusCode ${response.statusCode} - ${BaseLink.getPoints}');
+    log('Body ${response.body}');
+    if(response.statusCode == 200){
+      return json.decode(response.body)["data"];
+    }
+    throw Exception(json.decode(response.body)["message"]);
+  }
+    Future<String> createMoneyLink(int point) async {
+    final response = await http.get(
+        Uri.parse(BaseLink.createMoneyLink + '?numberPoint=$point'),
+        headers: BaseCommon.instance.headerRequest());
+    log('StatusCode ${response.statusCode} - ${BaseLink.createMoneyLink + '?numberPoint=$point'}');
+    log('Body ${response.body}');
+    if (response.statusCode == 200) {
+      return json.decode(response.body)["data"];
+    }
+    throw Exception(json.decode(response.body)['message']);
+  }
+    Future<void> sendPoint({required int point, required int userId})async{
+    final response = await http.get(
+        Uri.parse('${BaseLink.sendPoint}?numberPoint=$point&userId=$userId'),
+        headers: BaseCommon.instance.headerRequest());
+    log('StatusCode ${response.statusCode} - ${'${BaseLink.sendPoint}??numberPoint=$point&userId=$userId'}');
+    log('Body ${response.body}');
+    if (response.statusCode == 200) {
+      return json.decode(response.body)["data"];
+    }
+    throw Exception(json.decode(response.body)['message']);
+}
 }

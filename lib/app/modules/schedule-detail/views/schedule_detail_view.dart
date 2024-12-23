@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
 import 'package:rca_resident/app/resource/text_style.dart';
+import 'package:rca_resident/app/resource/util_common.dart';
 
 import '../controllers/schedule_detail_controller.dart';
 
@@ -73,10 +74,8 @@ class ScheduleDetailView extends GetView<ScheduleDetailController> {
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: ColorsManager.primary,
-                            borderRadius: BorderRadius.circular(
-                                UtilsReponsive.height(15, context))),
+                        decoration: UtilCommon.shadowBox(context,
+                            colorBg: ColorsManager.primary),
                         child: Column(
                           children: [
                             _textData2(context,
@@ -93,8 +92,13 @@ class ScheduleDetailView extends GetView<ScheduleDetailController> {
                                   SizedBoxConst.size(context: context),
                               itemBuilder: (context, index) => _textData2(
                                   context,
-                                  title: controller.paymentDetail.value
-                                      .paymentDetails![index].material!.name! +'\n(${controller.paymentDetail.value.paymentDetails![index].quantity!})',
+                                  title: controller
+                                          .paymentDetail
+                                          .value
+                                          .paymentDetails![index]
+                                          .material!
+                                          .name! +
+                                      '\n(${controller.paymentDetail.value.paymentDetails![index].quantity!})',
                                   content2:
                                       '${(controller.paymentDetail.value.paymentDetails![index].material!.price! * controller.paymentDetail.value.paymentDetails![index].quantity!).toStringAsFixed(2)}',
                                   content:
@@ -108,7 +112,8 @@ class ScheduleDetailView extends GetView<ScheduleDetailController> {
                                 TextConstant.titleH3(context,
                                     text: 'Tổng', color: Colors.white),
                                 TextConstant.titleH3(context,
-                                    text: '${controller.paymentDetail.value.payment!.amountPoint}  điểm',
+                                    text:
+                                        '${controller.paymentDetail.value.payment!.amountPoint}  điểm',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ],
@@ -149,7 +154,7 @@ class ScheduleDetailView extends GetView<ScheduleDetailController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 2,
+            flex: 2,
             child: TextConstant.subTile3(context, text: title, color: color)),
         Expanded(
           child: TextConstant.subTile3(context,

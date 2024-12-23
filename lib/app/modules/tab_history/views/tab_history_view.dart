@@ -31,6 +31,8 @@ class TabHistoryView extends GetView<TabHistoryController> {
               Obx(
                 () => controller.isLoading.value
                     ? CircularProgressIndicator()
+                     : controller.listSchedule.value.isEmpty
+                        ? Center(child: TextConstant.subTile3(context, text: 'Chưa có lịch'))
                     : ListView.separated(
                         shrinkWrap: true,
                         primary: false,
@@ -53,10 +55,7 @@ class TabHistoryView extends GetView<TabHistoryController> {
       child: Container(
           // height: UtilsReponsive.height(100, context),
           width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(UtilsReponsive.height(15, context)),
-              border: Border.all(color: ColorsManager.primary)),
+          decoration: UtilCommon.shadowBox(context, colorSd: ColorsManager.primary),
           padding: EdgeInsets.symmetric(
               vertical: UtilsReponsive.height(10, context),
               horizontal: UtilsReponsive.height(10, context)),

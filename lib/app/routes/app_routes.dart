@@ -15,6 +15,9 @@ abstract class Routes {
   static const CALENDAR_DETAIL = _Paths.CALENDAR_DETAIL;
   static const TAB_HISTORY = _Paths.TAB_HISTORY;
   static const SCHEDULE_DETAIL = _Paths.SCHEDULE_DETAIL;
+  static const CHAT = _Paths.CHAT;
+  static const SEND = _Paths.SEND;
+  static const SEND_POINT = _Paths.SEND_POINT;
 }
 
 abstract class _Paths {
@@ -31,4 +34,7 @@ abstract class _Paths {
   static const CALENDAR_DETAIL = '/calendar-detail';
   static const TAB_HISTORY = '/tab-history';
   static const SCHEDULE_DETAIL = '/schedule-detail';
+  static const CHAT = '/chat';
+  static const SEND = '/send';
+  static const SEND_POINT = '/send-point';
 }

@@ -7,6 +7,7 @@ import 'package:rca_resident/app/modules/tab_account/model/nav_account.dart';
 import 'package:rca_resident/app/resource/color_manager.dart';
 import 'package:rca_resident/app/resource/reponsive_utils.dart';
 import 'package:rca_resident/app/resource/text_style.dart';
+import 'package:rca_resident/app/resource/util_common.dart';
 import 'package:rca_resident/app/routes/app_pages.dart';
 
 import '../controllers/tab_account_controller.dart';
@@ -25,27 +26,35 @@ class TabAccountView extends GetView<TabAccountController> {
                 SizedBoxConst.size(context: context, size: 20),
                 _avatar(context),
                 SizedBoxConst.size(context: context),
-                TextConstant.titleH2(context, text: 'Nguyễn Văn A'),
-                RichText(
-                    text: TextSpan(
-                        style: Theme.of(context).textTheme.titleSmall,
-                        children: <TextSpan>[
-                      TextSpan(
-                        text: 'Số điểm:',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: const Color(0xff979797),
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                      TextSpan(
-                        text: '162',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                    ])),
+               TextConstant.titleH2(context, text: '${BaseCommon.instance.accountSession?.firstName} ${BaseCommon.instance.accountSession?.lastName}'),
+                Obx(
+                  () => RichText(
+                      text: TextSpan(
+                          style: Theme.of(context).textTheme.titleSmall,
+                          children: <TextSpan>[
+                        TextSpan(
+                          text: 'Số điểm:',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color: const Color(0xff979797),
+                                  fontSize: UtilsReponsive.height(14, context)),
+                        ),
+                        TextSpan(
+                          text: controller.point.value.toStringAsFixed(2),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: UtilsReponsive.height(14, context)),
+                        ),
+                      ])),
+                ),
                 SizedBoxConst.size(context: context),
-                _dashboard(context),
+                // _dashboard(context),
                 Padding(
                   padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
                   child: Column(
@@ -107,21 +116,32 @@ class TabAccountView extends GetView<TabAccountController> {
     return GestureDetector(
         onTap: () {
           if (nav.path == 'qr_code') {
-            Get.bottomSheet(Container(
-              height: UtilsReponsive.height(400, Get.context!),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                        UtilsReponsive.height(15, Get.context!)),
-                    topRight: Radius.circular(
-                        UtilsReponsive.height(15, Get.context!)),
+            Get.dialog(Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Center(
+                child: Container(
+                  height:  UtilsReponsive.height(300, context),
+                  alignment: Alignment.center,
+                  decoration: UtilCommon.shadowBox(context,
+                      colorSd: ColorsManager.primary),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: Icon(Icons.close)),
+                      ),
+                      QrImageView(
+                          data: BaseCommon.instance.accessToken!,
+                          version: QrVersions.auto,
+                          size: UtilsReponsive.height(200, context)),
+                    ],
                   ),
-                  color: Colors.white),
-              child: QrImageView(
-                data: BaseCommon.instance.accessToken!,
-                version: QrVersions.auto,
-                size: 200.0,
+                ),
               ),
             ));
           } else {
@@ -230,6 +250,7 @@ class TabAccountView extends GetView<TabAccountController> {
               height: UtilsReponsive.height(80, context),
               width: UtilsReponsive.height(80, context),
               decoration: const BoxDecoration(shape: BoxShape.circle),
+              child:  Image.asset('assets/images/rca_logo.png'),
               // child: CachedNetworkImage(
               //   fit: BoxFit.fill,
               //   imageUrl: controller.account.value.avatarUrl ?? '',

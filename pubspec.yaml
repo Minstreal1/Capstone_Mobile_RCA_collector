@@ -15,6 +15,12 @@ dependencies:
   dart_jsonwebtoken: ^2.13.0
   intl:
   qr_flutter: ^4.1.0
+  quickalert:
+  talkjs_flutter: ^0.15.0
+  flutter_svg:
+  url_launcher: ^6.1.10
+  app_links:
+  qr_code_scanner_plus: ^2.0.6 
   flutter: 
     sdk: flutter
 

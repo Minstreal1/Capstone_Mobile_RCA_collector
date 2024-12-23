@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/calendar-detail/bindings/calendar_detail_binding.dart';
 import '../modules/calendar-detail/views/calendar_detail_view.dart';
+import '../modules/chat/bindings/chat_binding.dart';
+import '../modules/chat/views/chat_view.dart';
 import '../modules/hi/bindings/hi_binding.dart';
 import '../modules/hi/views/hi_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -12,6 +14,8 @@ import '../modules/personal_info/bindings/personal_info_binding.dart';
 import '../modules/personal_info/views/personal_info_view.dart';
 import '../modules/schedule-detail/bindings/schedule_detail_binding.dart';
 import '../modules/schedule-detail/views/schedule_detail_view.dart';
+import '../modules/send-point/bindings/send_point_binding.dart';
+import '../modules/send-point/views/send_point_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
 import '../modules/sign_up/views/sign_up_view.dart';
 import '../modules/tab-calendar/bindings/tab_calendar_binding.dart';
@@ -92,6 +96,16 @@ class AppPages {
       name: _Paths.SCHEDULE_DETAIL,
       page: () => const ScheduleDetailView(),
       binding: ScheduleDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEND_POINT,
+      page: () => const SendPointView(),
+      binding: SendPointBinding(),
     ),
   ];
 }

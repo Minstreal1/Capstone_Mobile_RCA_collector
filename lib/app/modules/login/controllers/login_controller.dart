@@ -56,10 +56,10 @@ class LoginController extends GetxController {
   Future<void> login() async {
     authService
         .login(
-            // username: phoneController.text,
-            //  password: passwordController.text,
-            username: "huynguyen005",
-            password: "huynguyen005"
+            username: phoneController.text,
+             password: passwordController.text,
+            // username: "huynguyen005",
+            // password: "huynguyen005"
             )
         .then((token) {
       BaseCommon.instance.saveToken(token).then((_) {

@@ -31,14 +31,16 @@ class TabCalendarView extends GetView<TabCalendarController> {
               Obx(
                 () => controller.isLoading.value
                     ? CircularProgressIndicator()
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemBuilder: (context, index) =>
-                            _cardData(context, controller.listSchedule[index]),
-                        separatorBuilder: (context, index) =>
-                            SizedBoxConst.size(context: context),
-                        itemCount: controller.listSchedule.value.length),
+                    : controller.listSchedule.value.isEmpty
+                        ? Center(child: TextConstant.subTile3(context, text: 'Chưa có lịch'))
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            primary: false,
+                            itemBuilder: (context, index) => _cardData(
+                                context, controller.listSchedule[index]),
+                            separatorBuilder: (context, index) =>
+                                SizedBoxConst.size(context: context),
+                            itemCount: controller.listSchedule.value.length),
               )
             ],
           )),
@@ -51,10 +53,8 @@ class TabCalendarView extends GetView<TabCalendarController> {
       child: Container(
           // height: UtilsReponsive.height(100, context),
           width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(UtilsReponsive.height(15, context)),
-              border: Border.all(color: ColorsManager.primary)),
+          decoration:
+              UtilCommon.shadowBox(context, colorSd: ColorsManager.primary),
           padding: EdgeInsets.symmetric(
               vertical: UtilsReponsive.height(10, context),
               horizontal: UtilsReponsive.height(10, context)),
@@ -66,18 +66,32 @@ class TabCalendarView extends GetView<TabCalendarController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.calendar_month,
-                        color: ColorsManager.primary,
-                        size: UtilsReponsive.height(16, context),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month,
+                            color: ColorsManager.primary,
+                            size: UtilsReponsive.height(16, context),
+                          ),
+                          SizedBoxConst.sizeWith(context: context, size: 5),
+                          TextConstant.subTile2(
+                              text: UtilCommon.convertEEEDateTime(
+                                  schedule.scheduleDate ?? DateTime.now()),
+                              fontWeight: FontWeight.w500,
+                              context),
+                        ],
                       ),
-                      SizedBoxConst.sizeWith(context: context, size: 5),
-                      TextConstant.subTile2(
-                          text: UtilCommon.convertEEEDateTime(
-                              schedule.scheduleDate ?? DateTime.now()),
-                          fontWeight: FontWeight.w500,
-                          context),
+                      GestureDetector(
+                        onTap: () {
+                          controller.goToChat(schedule: schedule);
+                        },
+                        child: Icon(
+                          Icons.chat_outlined,
+                          color: ColorsManager.primary,
+                        ),
+                      )
                     ],
                   ),
                   SizedBoxConst.size(context: context),
@@ -91,8 +105,7 @@ class TabCalendarView extends GetView<TabCalendarController> {
                       SizedBoxConst.sizeWith(context: context, size: 5),
                       TextConstant.subTile2(
                         context,
-                        text:
-                            '${schedule.scheduleId!}',
+                        text: '${schedule.scheduleId!}',
                       ),
                     ],
                   ),
@@ -153,19 +166,17 @@ class TabCalendarView extends GetView<TabCalendarController> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.toNamed(Routes.CALENDAR_DETAIL, arguments: schedule);
+                          Get.toNamed(Routes.CALENDAR_DETAIL,
+                              arguments: schedule);
                         },
                         child: Container(
                           alignment: Alignment.center,
                           height: UtilsReponsive.height(30, context),
-                          padding: EdgeInsets.symmetric(horizontal: UtilsReponsive.width(5, context)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: UtilsReponsive.width(5, context)),
                           // width: UtilsReponsive.height(100, context),
-                          decoration: BoxDecoration(
-                            color: ColorsManager.primary,
-                            borderRadius: BorderRadius.circular(
-                                UtilsReponsive.height(8, context)),
-                            border: Border.all(color: ColorsManager.primary),
-                          ),
+                          decoration: UtilCommon.shadowBox(context,
+                              colorBg: ColorsManager.primary),
                           child: TextConstant.subTile3(context,
                               text: 'Bắt đầu thu gom', color: Colors.white),
                         ),
